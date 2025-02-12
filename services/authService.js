@@ -1,26 +1,64 @@
 const { response, request } = require('express');
+const { validationResult } = require('express-validator');
 
 const newUser = (req = request, res = response) => {
-    const {body} = req;
-    res.json({
+    const { fullName, email, password } = req.body;
+
+    // Manejo de errores
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({
+            ok: false,
+            errors: errors.mapped()
+        })
+    }
+
+    res.status(201).json({
         ok: true,
         msg: 'register',
-        body
-    })
+        fullName,
+        email,
+        password
+    });
 };
 
 const loginUser = (req = request, res = response) => {
-    res.json({
+    const { email, password } = req.body;
+
+    // Manejo de errores
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            ok: false,
+            errors: errors.mapped()
+        })
+    }
+
+    res.status(200).json({
         ok: true,
-        msg: 'login'
-    })
+        msg: 'login',
+        email,
+        password
+    });
 };
 
 const renewToken = (req = request, res = response) => {
-    res.json({
+    const { token } = req.body;
+
+    // Manejo de errores
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            ok: false,
+            errors: errors.mapped()
+        })
+    }
+
+    res.status(200).json({
         ok: true,
-        msg: 'new token'
-    })
+        msg: 'login',
+        token
+    });
 };
 
 module.exports = {
