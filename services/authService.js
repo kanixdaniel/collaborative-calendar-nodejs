@@ -1,9 +1,11 @@
 const { response, request } = require('express');
 
 const newUser = (req = request, res = response) => {
+    const {body} = req;
     res.json({
         ok: true,
-        msg: 'register'
+        msg: 'register',
+        body
     })
 };
 
