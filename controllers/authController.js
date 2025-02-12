@@ -4,6 +4,7 @@ const { Router } = require('express');
 const { newUser, loginUser, renewToken } = require('../services/authService');
 const { check } = require('express-validator');
 const { regExp } = require('../helpers/constants');
+const { fieldValidators } = require('../middlewares/fieldValidators');
 const router = Router();
 
 router.post(
@@ -15,6 +16,7 @@ router.post(
         check('email', 'Debe de proporcionar un email válido').isEmail(),
         check('password', 'La contraseña es necesaria').notEmpty(),
         check('password', 'Debe de proporcionar una contraseña válida').matches(regExp.password),
+        fieldValidators
     ],
     newUser // servicio
 );
@@ -26,6 +28,7 @@ router.post(
         check('email', 'Email y/o contraseña inválidos').isEmail(),
         check('password', 'Email y/o contraseña inválidos').notEmpty(),
         check('password', 'Email y/o contraseña inválidos').matches(regExp.password),
+        fieldValidators
     ],
     loginUser
 );
@@ -35,6 +38,7 @@ router.patch(
     [ // middlewares
         check('token', 'Debe de proporcionar un token').notEmpty(),
         check('token', 'Debe de proporcionar un token válido').isJWT(),
+        fieldValidators
     ],
     renewToken
 );
