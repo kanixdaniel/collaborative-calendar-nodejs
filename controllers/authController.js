@@ -5,6 +5,7 @@ const { newUser, loginUser, renewToken } = require('../services/authService');
 const { check } = require('express-validator');
 const { regExp } = require('../helpers/constants');
 const { fieldValidators } = require('../middlewares/fieldValidators');
+const { jwtValidator } = require('../middlewares/jwtValidator');
 const router = Router();
 
 router.post(
@@ -33,13 +34,9 @@ router.post(
     loginUser
 );
 
-router.patch(
+router.get(
     '/renew-token',
-    [ // middlewares
-        check('token', 'Debe de proporcionar un token').notEmpty(),
-        check('token', 'Debe de proporcionar un token válido').isJWT(),
-        fieldValidators
-    ],
+    [jwtValidator],// middlewares
     renewToken
 );
 
