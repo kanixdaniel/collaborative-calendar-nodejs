@@ -19,8 +19,8 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Rutas
-app.use('/api/v1/auth', require('./controllers/authController'))
-// TODO: CRUD eventos
+app.use('/api/v1/auth', require('./controllers/authController'));
+app.use('/api/v1/events', require('./controllers/eventController'));
 
 // Escucha del servidor
 app.listen(process.env.PORT || 3000, () => {
