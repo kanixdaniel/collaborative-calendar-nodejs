@@ -8,11 +8,8 @@ const app = express();
 app.use(express.static('public'));
 
 // Rutas
-/* app.get('/', (req, res) => {
-    res.json({
-        ok: true
-    })
-}); */
+app.use('/api/v1/auth', require('./controllers/authController'))
+// TODO: CRUD eventos
 
 // Escucha del servidor
 app.listen(process.env.PORT || 3000, () => {
