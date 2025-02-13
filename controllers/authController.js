@@ -26,9 +26,7 @@ router.post(
     '/login',
     [ // middlewares
         check('email', 'Email y/o contraseña inválidos').notEmpty(),
-        check('email', 'Email y/o contraseña inválidos').isEmail(),
         check('password', 'Email y/o contraseña inválidos').notEmpty(),
-        check('password', 'Email y/o contraseña inválidos').matches(regExp.password),
         fieldValidators
     ],
     loginUser
