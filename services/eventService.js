@@ -44,7 +44,7 @@ const updateEvent = async (req = request, res = response) => {
             });
         }
 
-        if(event.user.toString() !== uid) {
+        if (event.user.toString() !== uid) {
             return res.status(403).json({
                 ok: false,
                 message: 'El usuario no tiene permiso para actualizar este evento'
@@ -53,7 +53,7 @@ const updateEvent = async (req = request, res = response) => {
 
         const newEvent = {
             ...req.body,
-            user:uid
+            user: uid
         };
 
         const eventUpdated = await Event.findByIdAndUpdate(eventId, newEvent, { new: true });
@@ -72,12 +72,38 @@ const updateEvent = async (req = request, res = response) => {
 };
 
 const deleteEvent = async (req = request, res = response) => {
+    const eventId = req.params.id;
+    const { uid } = req;
 
+    try {
+        const event = await Event.findById(eventId);
 
-    res.status(200).json({
-        ok: true,
-        msg: 'delete event'
-    });
+        if (!event) {
+            return res.status(404).json({
+                ok: false,
+                message: 'No se encontró el evento que se desea eliminar'
+            });
+        }
+
+        if (event.user.toString() !== uid) {
+            return res.status(403).json({
+                ok: false,
+                message: 'El usuario no tiene permiso para eliminar este evento'
+            });
+        }
+        
+        await Event.findByIdAndDelete(eventId);
+
+        res.status(204).json({
+            ok: true
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            ok: false,
+            message: 'No se pudo eliminar el evento. Contacte al administrador'
+        });
+    }
 };
 
 module.exports = {
