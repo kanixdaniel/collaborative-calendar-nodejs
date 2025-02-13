@@ -28,7 +28,18 @@ router.post(
     setNewEvent
 );
 
-router.put('/:id', updateEvent);
+router.put(
+    '/:id',
+    [ // middlewares
+        check('title', 'El titulo del evento es necesario').notEmpty(),
+        check('start', 'La fecha de inicio del evento es necesaria').notEmpty(),
+        check('start', 'Debe de proporcionar una fecha de inicio válida para el evento').custom(isDate),
+        check('end', 'La fecha de finalización del evento es necesaria').notEmpty(),
+        check('end', 'Debe de proporcionar una fecha de finalización válida para el evento').custom(isDate),
+        fieldValidators
+    ],
+    updateEvent
+);
 
 router.delete('/:id', deleteEvent);
 
